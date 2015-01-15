@@ -17,8 +17,8 @@ void CuDNNPoolingLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
   CHECK_EQ(this->pad_h_, 0);
   CHECK_EQ(this->pad_w_, 0);
   CUDNN_CHECK(cudnnCreate(&handle_));
-  cudnn::createTensor4dDesc<Dtype>(&bottom_desc_);
-  cudnn::createTensor4dDesc<Dtype>(&top_desc_);
+  cudnn::createTensorDesc<Dtype>(&bottom_desc_);
+  cudnn::createTensorDesc<Dtype>(&top_desc_);
   cudnn::createPoolingDesc<Dtype>(&pooling_desc_,
       this->layer_param_.pooling_param().pool(), &mode_,
       this->kernel_h_, this->kernel_w_, this->stride_h_, this->stride_w_);
@@ -36,8 +36,8 @@ void CuDNNPoolingLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
 
 template <typename Dtype>
 CuDNNPoolingLayer<Dtype>::~CuDNNPoolingLayer() {
-  cudnnDestroyTensor4dDescriptor(bottom_desc_);
-  cudnnDestroyTensor4dDescriptor(top_desc_);
+  cudnnDestroyTensorDescriptor(bottom_desc_);
+  cudnnDestroyTensorDescriptor(top_desc_);
   cudnnDestroyPoolingDescriptor(pooling_desc_);
   cudnnDestroy(handle_);
 }
