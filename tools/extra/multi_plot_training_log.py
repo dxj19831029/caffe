@@ -127,6 +127,12 @@ def plot_chart(chart_types, path_to_png, path_to_log_list):
                     # scale the point data.
                     for ind, val in enumerate(data[1]):
                         data[1][ind]=val*10
+                    label+=" (x10)"
+                if chart_type == 4 or chart_type == 5:
+                    # scale the train learning rate
+                    for ind, val in enumerate(data[1]):
+                        data[1][ind]=val*1000
+                    label+=" (x1000)"
             linewidth = 0.75
             ## If there too many datapoints, do not use marker.
     ##        use_marker = False
