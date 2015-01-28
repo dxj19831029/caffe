@@ -101,6 +101,16 @@ def get_data_label(path_to_log):
         get_log_file_suffix())]
     return label
 
+def get_data_label_with_one_path(path_to_log):
+    label = path_to_log[path_to_log.rfind('/')+1 : path_to_log.rfind(
+        get_log_file_suffix())]
+    first_slash=path_to_log.rfind('/')
+    second=path_to_log[0:first_slash-1].rfind('/')
+    if second >= 0 and second < first_slash:
+        label = path_to_log[second+1:first_slash-1]+"-"+label
+    return label
+    
+
 def get_legend_loc(chart_type):
     x_axis, y_axis = get_field_descriptions(chart_type)
     loc = 'lower right'
@@ -120,7 +130,11 @@ def plot_chart(chart_types, path_to_png, path_to_log_list):
             data = load_data(data_file, x, y)
             ## TODO: more systematic color cycle for lines
             color = [random.random(), random.random(), random.random()]
-            label = get_data_label(path_to_log)
+            label=""
+            if len(path_to_log_list) > 1:
+                label=get_data_label_with_one_path(path_to_log)
+            else:
+                label = get_data_label(path_to_log)
             if len(chart_types)>1:
                 label=y_axis_field+"--"+label
                 if chart_type == 0 or chart_type == 1:
@@ -156,6 +170,10 @@ def plot_chart(chart_types, path_to_png, path_to_log_list):
     plt.legend(loc = 0, ncol = 1) # ajust ncol to fit the space
     #plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=2, mode="expand", borderaxespad=0.)
     #plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+    #plt.figure(figsize=(2,2))
+    mng = plt.get_current_fig_manager()
+    #mng.frame.Maximize(True)
+    mng.resize(*mng.window.maxsize())
     plt.title(get_chart_type_description(chart_type))
     plt.xlabel(x_axis_field)
     plt.ylabel(y_axis_field)  
