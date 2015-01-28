@@ -3,7 +3,8 @@
 TOOLS=./build/tools
 
 $TOOLS/caffe train \
-    --solver=examples/cifar10/cifar10_full_solver.prototxt
+    --solver=examples/cifar10/cifar10_full_solver.prototxt \
+    --log "/home/xijing/Work/xijing/caffe/viz.log"
 
 # reduce learning rate by factor of 10
 $TOOLS/caffe train \
